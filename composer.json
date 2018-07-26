@@ -1,0 +1,13 @@
+{
+    "name": "aubryfr/env-vars-debug-bundle",
+    "description": "Symfony bundle to list all the environment variables used in parameter definitions",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Aubry Pirian",
+            "email": "aubry.pirian@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {}
+}
