@@ -1,5 +1,5 @@
 {
-    "name": "aubryfr/env-vars-debug-bundle",
+    "name": "aubry/env-vars-debug-bundle",
     "description": "Symfony bundle to list all the environment variables used in parameter definitions",
     "type": "library",
     "authors": [
@@ -9,5 +9,14 @@
         }
     ],
     "minimum-stability": "stable",
-    "require": {}
+    "autoload": {
+        "psr-4": {
+            "Aubry\\EnvVarsDebug\\": "src/"
+        }
+    },
+    "require": {
+        "php": "^7.1",
+        "symfony/framework-bundle": "^3.4",
+        "symfony/console": "^3.4"
+    }
 }
