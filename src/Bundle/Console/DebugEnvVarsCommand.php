@@ -21,6 +21,7 @@ class DebugEnvVarsCommand extends ContainerDebugCommand
     protected function configure()
     {
         $this->setName("aubry:debug:env-vars")
+            ->setDescription("List referenced environment variables")
             ->addOption("raw", null, null, "Display raw output");
     }
 
