@@ -20,7 +20,8 @@ class DebugEnvVarsCommand extends ContainerDebugCommand
      */
     protected function configure()
     {
-        $this->setName("aubry:debug:env-vars");
+        $this->setName("aubry:debug:env-vars")
+            ->addOption("raw", null, null, "Display raw output");
     }
 
     /**
@@ -93,7 +94,7 @@ class DebugEnvVarsCommand extends ContainerDebugCommand
         }
 
         // Display the output
-        $this->displayOutput($output, $envVars, $biggestNameLength);
+        $this->displayOutput($output, $input, $envVars, $biggestNameLength);
     }
 
     /**
@@ -108,10 +109,12 @@ class DebugEnvVarsCommand extends ContainerDebugCommand
 
     /**
      * @param OutputInterface $output
+     * @param InputInterface $input
      * @param array|EnvVar[] $envVars
      * @param int $biggestNameLength
      */
-    protected function displayOutput(OutputInterface $output, array $envVars, int $biggestNameLength): void
+    protected function displayOutput(OutputInterface $output, InputInterface $input,
+                                     array $envVars, int $biggestNameLength): void
     {
         if ($output->getVerbosity() < OutputInterface::VERBOSITY_NORMAL) {
             return;
@@ -132,33 +135,36 @@ class DebugEnvVarsCommand extends ContainerDebugCommand
         $col3Header = "Type";
         $col3Length = strlen($col3Header);
 
-        $output->writeln("");
         // Header row
-        $this->writeTableRow(
-            $output,
-            [
-                $this->buildCell($col1Header, $col1Length),
-                $this->buildCell($col2Header, $col2Length),
-                $this->buildCell($col3Header, $col3Length),
-            ]
-        );
-        $this->writeTableRow(
-            $output,
-            [
-                $this->buildCell("", $col1Length, "-", "-"),
-                $this->buildCell("", $col2Length, "-", "-"),
-                $this->buildCell("", $col3Length, "-", "-"),
-            ]
-        );
+        if (!$input->getOption("raw")) {
+            $output->writeln("");
+            $this->writeTableRow(
+                $output,
+                [
+                    $this->buildCell($col1Header, $col1Length),
+                    $this->buildCell($col2Header, $col2Length),
+                    $this->buildCell($col3Header, $col3Length),
+                ]
+            );
+            $this->writeTableRow(
+                $output,
+                [
+                    $this->buildCell("", $col1Length, "-", "-"),
+                    $this->buildCell("", $col2Length, "-", "-"),
+                    $this->buildCell("", $col3Length, "-", "-"),
+                ]
+            );
+        }
 
         // Variables
+        $marginChar = !$input->getOption("raw") ? " " : "";
         foreach ($envVars as $envVar) {
             $this->writeTableRow(
                 $output,
                 [
-                    $this->buildCell($envVar->getName(), $col1Length),
-                    $this->buildCell($envVar->isMandatory() ? "true" : "false", $col2Length),
-                    $this->buildCell($envVar->getType(), 0),
+                    $this->buildCell($envVar->getName(), $col1Length, " ", $marginChar),
+                    $this->buildCell($envVar->isMandatory() ? "true" : "false", $col2Length, " ", $marginChar),
+                    $this->buildCell($envVar->getType(), 0, " ", $marginChar),
                 ]
             );
         }
