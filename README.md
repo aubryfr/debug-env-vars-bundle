@@ -9,7 +9,7 @@ Any referenced environment variable will be listed :
 ## Installation
 
 ```php
-composer require aubry/debug-env-vars-bundle
+composer require aubry/env-vars-debug-bundle
 ```
 
 Register the bundle, in **dev** mode only :
